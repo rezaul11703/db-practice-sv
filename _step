@@ -1,0 +1,64 @@
+ServerSite
+1. make a folder using mkdir folderName
+2. npm install
+3. npm i express cors mongodb
+
+database cretaion 
+1. set user: Like " Pdb1"
+2. set pass : Like " 7gAbK86jTSLoX2Hn"
+3. get full code after connect .
+
+get server Ready
+1. required (express, app, port) and also milware app.use(cors()) and app.use(express.json()) and app.listen(port)
+1. set pass in the required filled
+2. added async funtion most like RUN and close it with call it like run().catch(console.dir)
+3. make a try catch method 
+4. client.connect()
+5. make a variable like userInfo and value is client.db("write a name what will showin database").collection ('like array name')
+
+
+Get data from client side to serversite (ServerSite)
+1. app.post(url,async(req,res)=>{
+  const newUser = req.body
+  const result= userInfo.insertOne(newUser)
+  res.send(result)
+})
+
+Send data from serversite to show on User Interface(Seversite)
+app.get(url, async(req,res)=>{
+    const query={}
+    const cursor= userInforamtion.find(query)
+    const users = await cursor.toArray()
+    res.send(users)
+})
+
+delete data form database
+
+
+delete data from User Interface
+const [users,setUsers]= useState([])
+  ///for delete a user
+    const handleDelete= id=>{
+      const process = window.confirm('Are you sure to delete')
+      if(process){
+        const url=`http://localhost:5000/user/${id}`
+      fetch(url,{
+        method:"DELETE"
+      })
+      .then(res=>res.json())
+      .then(data=>{
+        if(data.deletedCount>0){
+          console.log("deleted", id)
+          const remainUsers= users.filter(user=> user._id!== id)
+          setUsers(remainUsers)
+        }
+      })
+      }
+     }
+delete data from database
+      app.delete('/user/:id', async(req,res)=>{
+    const id=req.params.id
+    const query={_id:ObjectId(id)}
+    const result = await userInforamtion.deleteOne(query)
+    res.send(result)
+  })
