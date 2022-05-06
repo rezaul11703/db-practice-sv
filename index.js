@@ -26,6 +26,13 @@ async function run(){
           console.log(result)
           res.send(result)
   })
+  /// for getting single user
+  app.get('/user/:id',async(req,res)=>{
+    const id=req.params.id
+    const query={_id:ObjectId(id)}
+    const result = await userInforamtion.findOne(query)
+    res.send(result)
+  } )
   ///for getting a exiting user
   app.get('/user', async(req,res)=>{
     const query={}
@@ -38,6 +45,21 @@ async function run(){
     const id=req.params.id
     const query={_id:ObjectId(id)}
     const result = await userInforamtion.deleteOne(query)
+    res.send(result)
+  })
+  //for updattin a user
+  app.put('/user/:id', async(req,res)=>{
+    const id=req.params.id
+    const updatedUser=req.body
+    const  query={_id:ObjectId(id)}
+    const options = { upsert: true };
+    const updateDoc = {
+      $set: {
+        name:updatedUser.name,
+        email:updatedUser.email
+      },
+    };
+    const result = await userInforamtion.updateOne(query,updateDoc,options)
     res.send(result)
   })
  }

@@ -62,3 +62,46 @@ delete data from database
     const result = await userInforamtion.deleteOne(query)
     res.send(result)
   })
+
+update user in Ui
+1. showing single clicked id in client side
+use {id}=useParams()
+in home component create a dyanmik link like <Link to={`/update/${user._id}`}>
+set route as <Route path="/update/:id">
+for showing the name use fetch
+updating server site
+app.put('/user/:id', async(req,res)=>{
+    const id=req.params.id
+    const updatedUser=req.body
+    const  query={_id:ObjectId(id)}
+    const options = { upsert: true };
+    const updateDoc = {
+      $set: {
+        name:updatedUser.name,
+        email:updatedUser.email
+      },
+    };
+    const result = await userInforamtion.updateOne(query,updateDoc,options)
+    res.send(result)
+  })
+  updateing client site
+  const handleUpdateUser=event=>{
+    event.preventDefault()
+    const name= event.target.name.value
+    const email= event.target.email.value 
+    const updateUser={name, email}
+    /// for post a data
+    const url=`http://localhost:5000/user/${id}`
+    fetch(url,{
+      method: "PUT",
+      headers:{
+        'content-type':"application/json"
+      },
+      body:JSON.stringify(updateUser)
+    })
+    .then(res=>res.json())
+    .then(data=>{
+      alert('Updated Succesfull')
+      navigate('/')
+      event.target.reset()
+    })
